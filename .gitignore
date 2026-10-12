@@ -1,0 +1,24 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+# Keep the lock file committed so provider versions are pinned:
+# .terraform.lock.hcl is intentionally NOT ignored
+
+# Secrets and local config
+.env
+*.pem
+*.key
+kubeconfig*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+tfplan
+*.tfplan

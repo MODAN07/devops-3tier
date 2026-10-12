@@ -1,0 +1,27 @@
+# Proves GitHub -> AWS OIDC works BEFORE we build any real pipeline.
+# Run it manually: GitHub repo > Actions > oidc-smoke-test > Run workflow (branch: main).
+name: oidc-smoke-test
+
+on:
+  workflow_dispatch:
+
+# 'id-token: write' lets the job request an OIDC token from GitHub. Without it the AWS step fails.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  assume-role:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get temporary AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ECR_PUSH_ROLE_ARN }}
+          aws-region: eu-west-1
+
+      - name: Who am I?
+        run: aws sts get-caller-identity
+
+      - name: Log in to ECR
+        uses: aws-actions/amazon-ecr-login@v2
